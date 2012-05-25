@@ -1,70 +1,97 @@
-<!--
-This file demonstrates how to use a shared configuration file. In this
-case the absolute path of the file is /shared/config.js. Shared 
-configuration can be used to ensure:
-a) A version of the applications configuration is bundled with the app  
-   at build time - i.e. the locally included config.js file
-b) The latest version of the applications configuration can be loaded 
-   using a cloud action call
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title id="page-title">test</title>
 
-To fully appreciate local vs cloud config: build this app and install it on a 
-device. Once installed, change the contents of the config variable in config.js 
-from within the Studio and click the button to "Execute cloud action call" in 
-the app on the device. 
-Notice how the config returned from the cloud action call reflects the changes 
-just made, while the local config remain static. Using this method, you can keep 
-your apps updated with new configuration information without the need to publish  
-a new app to the app store.
--->
+     <script type="text/javascript"> 
+ 	var xmlhttp;
+	function ConnectToNet(url) {
+		xmlhttp = null;
+		if (window.XMLHttpRequest) {xmlhttp = new XMLHttpRequest();}
+		else if (window.ActiveXObject) {xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")}
+		if (xmlhttp != null) {
+			xmlhttp.onreadystatechange = state_Change
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send(null);
+		} else {
+			document.write('<!--');
+			alert("Internet problems; The application doesn't run without an internet connection.")
+			}
+	}
+	function state_Change() {
+		if (xmlhttp.readyState == 4) {
+			try {
+				if (xmlhttp.status == 200) {
+					//alert("Internet is Connected.");
+					return;
+				} else {
+					document.write('<!--');
+					alert("Internet problems! The application doesn't run without an internet connection.");
+					}
+			} catch (err) {
+				document.write('<!--');
+				alert("Internet problems. The application doesn't run without an internet connection.");
+				}
+		}
+	}
+	ConnectToNet('http://www.google.com');
+</script>
 
-<h1>New Application</h1>
+    <link rel="stylesheet" type="text/css" href="touch/resources/css/sencha-touch.css">
+	<script type="text/javascript" src="touch/sencha-touch-all.js"></script>
+    
+    
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 
-<p> Click on the button below to make a cloud "action" call which will return 
-  the latest configuration information from the shared config.js file</p>
+    <script src="app/model/EditRequest.js" type="text/javascript"></script>
+    <script src="app/model/HourList.js" type="text/javascript"></script>
+    <script src="app/model/Languages.js" type="text/javascript"></script>
+    <script src="app/model/Map.js" type="text/javascript"></script>
+    <script src="app/model/Requests.js" type="text/javascript"></script>
+    <script src="app/model/SelectFriend.js" type="text/javascript"></script>
+    
+    <script src="app/store/EditRequest.js" type="text/javascript"></script>
+    <script src="app/store/HourListEnd.js" type="text/javascript"></script>
+    <script src="app/store/HourListStart.js" type="text/javascript"></script>
+    <script src="app/store/Languages.js" type="text/javascript"></script>
+    <script src="app/store/Map.js" type="text/javascript"></script>
+    <script src="app/store/Requests.js" type="text/javascript"></script>
+    <script src="app/store/SelectFriend.js" type="text/javascript"></script>
+    
+    <script src="app/view/LoadingView.js" type="text/javascript"></script>
+    <script src="app/view/ChangeLanguageView.js" type="text/javascript"></script>
+    <script src="app/view/ChangePasswordView.js" type="text/javascript"></script>
+    <script src="app/view/ConfigurationView.js" type="text/javascript"></script>
+    <script src="app/view/EditRequestView.js" type="text/javascript"></script>
+    <script src="app/view/HomeView.js" type="text/javascript"></script>
+    <script src="app/view/LoginView.js" type="text/javascript"></script>
+    <script src="app/view/ManageRequestsView.js" type="text/javascript"></script>
+    <script src="app/view/MapView.js" type="text/javascript"></script>
+    <script src="app/view/RegisterView.js" type="text/javascript"></script>
+    <script src="app/view/SelectFriendView.js" type="text/javascript"></script>
+    <script src="app/view/SendFriendRequestView.js" type="text/javascript"></script>
+    <script src="app/view/SoundAlertView.js" type="text/javascript"></script>
+    <script src="app/view/AccountView.js" type="text/javascript"></script>
+    
+    <script src="app/controller/ChangeLanguage.js" type="text/javascript"></script>
+    <script src="app/controller/ChangePassword.js" type="text/javascript"></script>
+    <script src="app/controller/Configuration.js" type="text/javascript"></script>
+    <script src="app/controller/EditRequest.js" type="text/javascript"></script>
+    <script src="app/controller/Home.js" type="text/javascript"></script>
+    <script src="app/controller/Login.js" type="text/javascript"></script>
+    <script src="app/controller/ManageRequests.js" type="text/javascript"></script>
+    <script src="app/controller/Map.js" type="text/javascript"></script>
+    <script src="app/controller/Register.js" type="text/javascript"></script>
+    <script src="app/controller/SelectFriend.js" type="text/javascript"></script>
+    <script src="app/controller/SendFriendRequest.js" type="text/javascript"></script>
+    <script src="app/controller/SoundAlert.js" type="text/javascript"></script>
+    <script src="app/controller/Account.js" type="text/javascript"></script>
+    
+    <script type="text/javascript" src="app/utils.js"></script>
+    <script type="text/javascript" src="app/app.js"></script>
+        
+</head>
 
-
-<p> Config from locally included config.js : </p>
-<div id="localConfig">
-
-</div>
-
-<p> Config from cloud action call: </p>
-<div id="cloudConfig">
-
-</div>
-
-<!-- Include the config.js file from the shared directory 
-(as if it was in the local directory) -->
-<script src="config.js" type="text/javascript"></script>
-
-<!-- include the init.js file from within the default package -->
-
-
-
-<!-- 
-The client directory contains all files which may be included when an app is 
-built.
-
-The client directory is divided into "packages" - incremental units of 
-functionality and configuration.
-
-Every app will always include the files within the "default" package - 
-represented by the path /client/default/ - i.e. the directory containing this 
-file.
-
-New packages can be defined by creating additional directories within the client
-directory. To associate a particular package with a destination (iPhone, iPad, 
-Android etc), add the "package" (i.e. directory) name to the packages field 
-within the configuration section of the studio. 
-
-Multiple packages can be associated with a destination by adding multiple package
-names - separated by spaces - to the packages field in the configuration section.
-If multiple packages are defined, the packages are applied incrementally - i.e. 
-if the same file exists in multiple packages the order that the packages are 
-listed will determine which package the file is pulled from. The package names 
-are listed in order of significance with the most significant package name listed 
-first. 
-
-The contents of the default package are always included as the least significant 
-package.
--->
+<body></body>
+</html>
